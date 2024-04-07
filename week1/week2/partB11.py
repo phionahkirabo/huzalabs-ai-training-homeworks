@@ -1,31 +1,39 @@
-def prime_factors(n):
-    factors = []
-    divisor = 2
+import random
 
-    while n > 1:
-        while n % divisor == 0:
-            factors.append(divisor)
-            n //= divisor
-        divisor += 1
+def roll_dice():
+    return random.randint(1, 6)
 
-    return factors
-
-def digit_sum(n):
-    return sum(map(int, str(n)))
-
-def nthSmithNumber(n):
-    smith_count = 0
-    number = 4  
-
+def play_turn(player):
+    score = 0
+    print(f"It's {player}'s turn.")
     while True:
-        factors = prime_factors(number)
-        if len(factors) > 1:  
-            if digit_sum(number) == sum(map(digit_sum, factors)):
-                smith_count += 1
-                if smith_count == n:
-                    return number
-        number += 1
+        roll = roll_dice()
+        print(f"{player} rolled: {roll}")
+        if roll == 1:
+            print(f"{player} got a Pig! No points earned this turn.")
+            return 0
+        score += roll
+        print(f"{player}'s current score this turn: {score}")
+        choice = input("Do you want to roll again? (yes/no): ")
+        if choice.lower() != 'yes':
+            return score
+
+def play_game():
+    players = ['Player 1', 'Player 2']
+    scores = {'Player 1': 0, 'Player 2': 0}
+    turn = 0
+
+    while all(score < 100 for score in scores.values()):
+        player = players[turn % 2]
+        turn_score = play_turn(player)
+        scores[player] += turn_score
+        print(f"{player}'s total score: {scores[player]}")
+        if turn_score != 0:
+            print(f"{player} ends their turn with {scores[player]} points.")
+        turn += 1
+
+    winner = max(scores, key=scores.get)
+    print(f"Congratulations, {winner} wins with {scores[winner]} points!")
 
 
-print(nthSmithNumber(1))  
-print(nthSmithNumber(2))  
+play_game()
