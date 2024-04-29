@@ -1,0 +1,68 @@
+
+import turtle
+import math
+
+def pythagoras_tree(turtle, depth, size, angle):
+    if depth == 0:
+        return
+    else:
+        # Draw the first triangle
+        turtle.forward(size)
+        turtle.left(90)
+        turtle.forward(size)
+        turtle.left(135)
+        turtle.forward(size * math.sqrt(2))
+        turtle.left(135)
+        turtle.forward(size)
+        turtle.left(90)
+        
+        # Save the current position and angle
+        x, y = turtle.position()
+        heading = turtle.heading()
+        
+        # Draw the second triangle recursively
+        turtle.penup()
+        turtle.goto(x, y)
+        turtle.setheading(heading)
+        turtle.pendown()
+        
+        turtle.left(angle)
+        pythagoras_tree(turtle, depth - 1, size * math.sqrt(2) / 2, angle)
+        
+        # Draw the third triangle recursively
+        turtle.penup()
+        turtle.goto(x, y)
+        turtle.setheading(heading)
+        turtle.pendown()
+        
+        turtle.right(angle * 2)
+        pythagoras_tree(turtle, depth - 1, size * math.sqrt(2) / 2, angle)
+        
+        # Restore the original position and angle
+        turtle.penup()
+        turtle.goto(x, y)
+        turtle.setheading(heading)
+        turtle.pendown()
+
+def bonusPythagorasTree():
+    screen = turtle.Screen()
+    screen.setup(width=800, height=600)
+    screen.bgcolor("white")
+    screen.title("Pythagoras Tree with Waving Effect")
+    
+    t = turtle.Turtle()
+    t.speed(0)
+    t.penup()
+    t.goto(0, -200)
+    t.pendown()
+    t.color("green")
+    
+    angle = 20  # Initial angle
+    
+    for _ in range(10):  # Oscillate the angle 10 times
+        pythagoras_tree(t, 9, 100, angle)
+        angle *= -1  # Reverse the direction of oscillation
+    
+    screen.mainloop()
+
+bonusPythagorasTree()
