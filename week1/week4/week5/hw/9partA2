@@ -1,0 +1,8 @@
+def oddSum(L):
+    if not L:  
+        return 0
+    else:
+        if L[0] % 2 != 0:
+            return L[0] + oddSum(L[1:]) 
+        else:
+            return oddSum(L[1:])  
